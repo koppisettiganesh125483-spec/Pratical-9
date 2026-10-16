@@ -1,0 +1,59 @@
+
+# Implementation of Prim's Algorithm
+
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = [[0] * vertices for _ in range(vertices)]
+
+    # Add an edge with weight
+    def add_edge(self, u, v, weight):
+        self.graph[u][v] = weight
+        self.graph[v][u] = weight
+
+    # Prim's Algorithm
+    def prims_algorithm(self):
+        selected = [False] * self.V
+        selected[0] = True
+
+        print("Edge \tWeight")
+        total = 0
+
+        for _ in range(self.V - 1):
+            minimum = float('inf')
+            x = 0
+            y = 0
+
+            for i in range(self.V):
+                if selected[i]:
+                    for j in range(self.V):
+                        if (not selected[j]
+                                and self.graph[i][j] != 0
+                                and self.graph[i][j] < minimum):
+                            minimum = self.graph[i][j]
+                            x = i
+                            y = j
+
+            if minimum == float('inf'):
+                print("Graph is disconnected")
+                return
+
+            print(f"{x} - {y}\t{minimum}")
+            total += minimum
+            selected[y] = True
+
+        print("Total Minimum Cost:", total)
+
+
+# Main program
+g = Graph(5)
+
+g.add_edge(0, 1, 2)
+g.add_edge(0, 3, 6)
+g.add_edge(1, 2, 3)
+g.add_edge(1, 3, 8)
+g.add_edge(1, 4, 5)
+g.add_edge(2, 4, 7)
+g.add_edge(3, 4, 9)
+
+g.prims_algorithm()
